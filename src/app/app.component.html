@@ -1,0 +1,28 @@
+<nav class="nav navbar navbar-default">
+<a class="navbar-brand">Artivatic Codding Challenge</a>
+</nav>
+
+<div class="container">
+  <div class="col-md-12 col-lg-6">
+    <div class="container-fluid">
+        <label >Select State</label>
+        <select class="form-control"  (change)="state($event)">
+          <option selected value="">Choose a State</option>
+          <option *ngFor= "let v of states" [value]="v">{{v}}</option>
+        </select>
+    </div>
+    <div class="container-fluid" *ngIf="selectState">
+      <label >Select City</label>
+        <select class="form-control"(change)=setCity($event)>
+            <option selected value="">Choose a City</option>
+            <option *ngFor= "let c of city" [value]="c | json">{{c.City}}</option>
+        </select>
+    </div>
+    
+  </div>
+  <div class="col-md-12 col-lg-6 ">
+    <div class="container-fluid">
+      {{selectCity | json}}
+    </div>
+  </div>
+</div>
