@@ -4,17 +4,25 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { CityComponent } from './city/city.component';
 import { CityService } from './services/city.service';
-import {FormsModule} from '@angular/forms'
+import {FormsModule} from '@angular/forms';
+import { MapsComponent } from './maps/maps.component';
+import { AgmCoreModule } from '@agm/core';
+import { environment } from 'src/environments/environment';
 
 @NgModule({
   declarations: [
     AppComponent,
-    CityComponent
+    CityComponent,
+    MapsComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    AgmCoreModule.forRoot({
+      apiKey: environment.googleMapsKey,
+      libraries: ['places']
+    }),
   ],
   providers: [CityService],
   bootstrap: [AppComponent]
