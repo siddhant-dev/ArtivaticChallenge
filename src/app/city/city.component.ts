@@ -1,21 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CityService } from '../services/city.service';
+import {  Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-city',
   templateUrl: './city.component.html',
   styleUrls: ['./city.component.css']
 })
-export class CityComponent implements OnInit {
+export class CityComponent implements OnInit, OnDestroy {
   states: string[];
   selectState: string;
   city: City[] = [];
   selectCity: City;
   searchInput: string;
+  sub: Subscription;
+  sub2: Subscription;
   constructor(private service: CityService) {}
 
   ngOnInit() {
-    this.service.getStates().subscribe((payload: string[]) => {
+    this.sub = this.service.getStates().subscribe((payload: string[]) => {
       this.states = payload;
     }
     );
@@ -24,7 +27,7 @@ export class CityComponent implements OnInit {
   state(e: any) {
     this.city.length = 0;
     this.selectState = e.target.value;
-    this.service.getCities(this.selectState).subscribe((payload: City[]) =>
+    this.sub2 = this.service.getCities(this.selectState).subscribe((payload: City[]) =>
       this.city = payload
 
     );
@@ -36,6 +39,11 @@ export class CityComponent implements OnInit {
     this.searchInput = `${this.selectCity.City} ,${this.selectCity.District} ,${this.selectCity.State}`;
     // console.log(this.selectCity.City);
 
+  }
+
+  ngOnDestroy(){
+    this.sub.unsubscribe();
+    this.sub2.unsubscribe();
   }
 
 }

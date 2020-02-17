@@ -7,7 +7,7 @@ import {} from 'googlemaps';
   templateUrl: './maps.component.html',
   styleUrls: ['./maps.component.css']
 })
-export class MapsComponent implements OnInit {
+export class MapsComponent implements OnInit, OnChanges {
 
   @Input() searchQuery: string;
   latitude: number;
