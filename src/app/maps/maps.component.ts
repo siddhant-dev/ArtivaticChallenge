@@ -36,10 +36,18 @@ export class MapsComponent implements OnInit, OnChanges {
         // tslint:disable-next-line: prefer-for-of
         for (let i = 0; i < this.searchQuery.length; i++) {
           const r = `${this.searchQuery[i].City}, ${this.searchQuery[i].State}, ${this.searchQuery[i].District}`;
-          this.getMap(r);
+         
+          this.task(r, i);
         }
         // this.getMap();
       }
+    }
+
+    task(d, i) {
+      setTimeout(() => {
+        console.log(i);
+        this.getMap(d);
+      }, 500 * i);
     }
 
     getMap(sequery) {
@@ -61,7 +69,7 @@ export class MapsComponent implements OnInit, OnChanges {
         });
   }
 
-  btn(){
+  btn() {
     console.log(this.geoPoint);
   }
 }
