@@ -9,9 +9,10 @@ import {} from 'googlemaps';
 })
 export class MapsComponent implements OnInit, OnChanges {
 
-  @Input() searchQuery: string;
+  @Input() searchQuery: any[];
   latitude: number;
   longitude: number;
+  geoPoint: any[] = [];
   zoom: number;
 
   constructor(private mapsApiLoader: MapsAPILoader, private zone: NgZone) { }
@@ -19,6 +20,7 @@ export class MapsComponent implements OnInit, OnChanges {
   public s: ElementRef;
   map: google.maps.Map;
   ngOnInit() {
+
     this.mapsApiLoader.load().then(() => {
       this.map = new google.maps.Map(this.s.nativeElement);
       this.latitude = 28.7040592; // default to Delhi
@@ -30,26 +32,36 @@ export class MapsComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
       const chng: SimpleChange = changes.searchQuery;
       if (chng.currentValue !== chng.previousValue) {
-        this.getMap();
+        this.geoPoint = [];
+        // tslint:disable-next-line: prefer-for-of
+        for (let i = 0; i < this.searchQuery.length; i++) {
+          const r = `${this.searchQuery[i].City}, ${this.searchQuery[i].State}, ${this.searchQuery[i].District}`;
+          this.getMap(r);
+        }
+        // this.getMap();
       }
     }
 
-    getMap() {
-    // console.log(this.searchQuery);
+    getMap(sequery) {
 
-    const r = {
-        query: this.searchQuery,
+    // console.log(this.searchQuery);
+      const r = {
+        query: sequery,
         fields: ['name', 'geometry'],
       };
-    const autocomplete = new google.maps.places.PlacesService(this.map);
-    autocomplete.findPlaceFromQuery(r, (place: any, status) => {
+      const autocomplete = new google.maps.places.PlacesService(this.map);
+      autocomplete.findPlaceFromQuery(r, (place: any, status) => {
       this.zone.run(() => {
         if ((status === google.maps.places.PlacesServiceStatus.OK)) {
-          this.latitude = place[0].geometry.location.lat();
-          this.longitude = place[0].geometry.location.lng();
-          this.zoom = 12;
+           const la =  place[0].geometry.location.lat();
+           const lo =  place[0].geometry.location.lng();
+           this.geoPoint.push({lat: la, lon: lo});
         }
       });
         });
+  }
+
+  btn(){
+    console.log(this.geoPoint);
   }
 }

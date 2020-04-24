@@ -12,7 +12,7 @@ export class CityComponent implements OnInit, OnDestroy {
   selectState: string;
   city: City[] = [];
   selectCity: City;
-  searchInput: string;
+  searchInput: any[] =[];
   sub: Subscription;
   sub2: Subscription;
   constructor(private service: CityService) {}
@@ -25,21 +25,21 @@ export class CityComponent implements OnInit, OnDestroy {
   }
 
   state(e: any) {
-    this.city.length = 0;
+    // this.city.length = 0;
     this.selectState = e.target.value;
-    this.sub2 = this.service.getCities(this.selectState).subscribe((payload: City[]) =>
-      this.city = payload
-
-    );
+    this.sub2 = this.service.getCities(this.selectState).subscribe((payload: City[]) =>{
+      this.city = payload;
+      this.searchInput = this.city;
+    });
   }
 
-  setCity(e: any) {
-    const obj = e.target.value;
-    this.selectCity = JSON.parse(obj);
-    this.searchInput = `${this.selectCity.City} ,${this.selectCity.District} ,${this.selectCity.State}`;
-    // console.log(this.selectCity.City);
+  // setCity(e: any) {
+  //   const obj = e.target.value;
+  //   this.selectCity = JSON.parse(obj);
+  //   this.searchInput = `${this.selectCity.City} ,${this.selectCity.District} ,${this.selectCity.State}`;
+  //   // console.log(this.selectCity.City);
 
-  }
+  // }
 
   ngOnDestroy(){
     this.sub.unsubscribe();

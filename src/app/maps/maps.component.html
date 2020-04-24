@@ -1,7 +1,13 @@
 
-<div  #se></div>
+<div  #se>
+</div>
 <br>
-<agm-map  class="map" [latitude]="latitude" [longitude]="longitude" [zoom]="zoom">
-    <agm-marker [latitude]="latitude" [longitude]="longitude" >
+<agm-map  class="map" [latitude]="latitude" [longitude]="longitude" [zoom]="3">
+    <agm-marker *ngIf=!geoPoint [latitude]="latitude" [longitude]="longitude"></agm-marker>
+    <agm-marker *ngFor="let i of geoPoint" [latitude]="i.lat" [longitude]="i.lon" >
 </agm-marker>
 </agm-map>
+
+<button (click)="btn()">Get</button>
+
+
